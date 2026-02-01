@@ -425,11 +425,11 @@ Self {
                     _,
                     _,
                 ) => match event.value() {
-                    -1 => {
+                    -120 => {
                         self.convert_event(event, Event::Axis(Axis::SCROLL_WHEEL_DOWN), 1, true)
                             .await;
                     }
-                    1 => {
+                    120 => {
                         self.convert_event(event, Event::Axis(Axis::SCROLL_WHEEL_UP), 1, true)
                             .await;
                     }
