@@ -323,7 +323,16 @@ let config_dir = std::env::var("MAKIMA_CONFIG")
         let home = std::env::var("HOME").expect("HOME environment variable not set");
         format!("{}/.config/makima", home)
     });
-let file_path = std::path::PathBuf::from(&config_dir).join("current_layout");
+ let initial_config_name = config
+    .iter()
+    .find(|&x| x.associations == Associations::default())
+    .unwrap()
+    .name
+    .clone();
+
+// Create the file path with config name
+let file_path = std::path::PathBuf::from(&config_dir)
+    .join(format!("{}::current_layout", initial_config_name));
 
 if let Some(parent) = file_path.parent() {
     let _ = std::fs::create_dir_all(parent);
@@ -1371,9 +1380,19 @@ Self {
             let home = std::env::var("HOME").expect("HOME environment variable not set");
             format!("{}/.config/makima", home)
         });
-    let file_path = std::path::PathBuf::from(&config_dir).join("current_layout");
+
+    let config_name = self.config
+            .iter()
+            .find(|&x| x.associations == Associations::default())
+            .unwrap()
+            .name
+            .clone();
+
+    let file_path = std::path::PathBuf::from(&config_dir)
+            .join(format!("{}::current_layout", config_name));
+            
     let _ = std::fs::write(&file_path, format!("{}\n", *active_layout));
-    
+        
     if self.settings.notify_layout_switch {
         let notify = vec![String::from(format!(
             "notify-send -t 500 'Makima' 'Switching to layout {}'",
