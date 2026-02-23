@@ -1395,7 +1395,7 @@ Self {
         
     if self.settings.notify_layout_switch {
         let notify = vec![String::from(format!(
-            "notify-send -t 500 'Makima' 'Switching to layout {}'",
+            "notify-send -e -t 500 'Makima' 'Switching to layout {}'",
             *active_layout
         ))];
         self.spawn_subprocess(&notify).await;
